@@ -1,3 +1,41 @@
+# Changes include these
+as seen in the docker.yml
+```
+      - type: bind
+        source: ./changes/no_results.html
+        target: /usr/local/searxng/searx/templates/simple/messages/no_results.html
+      - type: bind
+        source: ./changes/s4j.png
+        target: /usr/local/searxng/searx/static/themes/simple/img/searxng.png
+      - type: bind
+        source: ./changes/index.html
+        target: /usr/local/searxng/searx/templates/simple/index.html
+      - type: bind
+        source: ./changes/base.html
+        target: /usr/local/searxng/searx/templates/simple/base.html
+      - type: bind
+        source: ./changes/404.html
+        target: /usr/local/searxng/searx/templates/simple/404.html
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/en/about.md
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/en/search-syntax.md
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/id/about.md
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/id/search-syntax.md
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/de/about.md
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/de/search-syntax.md
+```
+
 # searxng-docker
 
 Create a new SearXNG  instance in five minutes using Docker
