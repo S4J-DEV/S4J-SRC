@@ -1,5 +1,11 @@
-# Changes include these
-as seen in the docker.yml
+# Changes include:
+Config files such as
+- settings.yml
+- uwsgi.ini
+- .env
+- Caddyfile
+- docker-compose.yml
+And others as seen in the docker.yml
 ```
       - type: bind
         source: ./changes/no_results.html
