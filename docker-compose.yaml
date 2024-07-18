@@ -1,0 +1,115 @@
+#version: '3.7'
+
+services:
+
+  caddy:
+    container_name: caddy
+    image: caddy:2-alpine
+    network_mode: host
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data:rw
+      - caddy-config:/config:rw
+    environment:
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
+      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - DAC_OVERRIDE
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    command: redis-server --save "" --appendonly "no"
+    networks:
+      - searxng
+    tmpfs:
+      - /var/lib/redis
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+
+  searxng:
+    container_name: searxng
+    image: searxng/searxng:latest
+#    image: elestio/searxng:latest
+    networks:
+      - searxng
+    ports:
+#     - "127.0.0.1:8080:8080"
+     - "8080:8080"
+    volumes:
+      - ./searxng:/etc/searxng:rw
+        
+      - type: bind
+        source: ./changes/no_results.html
+        target: /usr/local/searxng/searx/templates/simple/messages/no_results.html
+
+      - type: bind
+        source: ./changes/s4j.png
+        target: /usr/local/searxng/searx/static/themes/simple/img/searxng.png
+        
+      - type: bind
+        source: ./changes/index.html
+        target: /usr/local/searxng/searx/templates/simple/index.html
+        
+      - type: bind
+        source: ./changes/base.html
+        target: /usr/local/searxng/searx/templates/simple/base.html
+        
+      - type: bind
+        source: ./changes/404.html
+        target: /usr/local/searxng/searx/templates/simple/404.html
+        
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/en/about.md
+        
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/en/search-syntax.md
+        
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/id/about.md
+        
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/id/search-syntax.md
+        
+      - type: bind
+        source: ./changes/about.md
+        target: /usr/local/searxng/searx/infopage/de/about.md
+        
+      - type: bind
+        source: ./changes/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/de/search-syntax.md
+
+    environment:
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+#      - BIND_ADDRESS=127.0.0.1:8080
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+networks:
+  searxng:
+    ipam:
+      driver: default
+
+volumes:
+  caddy-data:
+  caddy-config:
