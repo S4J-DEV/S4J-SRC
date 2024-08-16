@@ -5,6 +5,8 @@ Config files such as
 - .env
 - Caddyfile
 - docker-compose.yml
+- rewrite-hosts.yml
+- remove-hosts.yml
 And others as seen in the docker.yml
 ```
       - type: bind
