@@ -15,8 +15,8 @@ brand:
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 1
-  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex",
-  # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
+  # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
   autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
@@ -61,16 +61,14 @@ search:
     - rss
 
 server:
-  # If you change port, bind_address or base_url don't forget to rebuild
-  # instance's environment (make buildenv). Is overwritten by ${SEARXNG_PORT}
-  # and ${SEARXNG_BIND_ADDRESS}
+  # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
   port: 8888
   bind_address: "127.0.0.1"
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_URL}.
   base_url: "https://www.searchforjohn.com/"  # "http://example.com/location"
-  limiter: false  # rate limit the number of request on the instance, block some bots
-  public_instance: false  # enable features designed only for public instances
+  limiter: false # rate limit the number of request on the instance, block some bots
+  public_instance: false # enable features designed only for public instances
 
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
@@ -98,6 +96,7 @@ redis:
 ui:
   # Custom static path - leave it blank if you didn't change
   static_path: ""
+  # Is overwritten by ${SEARXNG_STATIC_USE_HASH}.
   static_use_hash: false
   # Custom templates path - leave it blank if you didn't change
   templates_path: ""
@@ -187,7 +186,7 @@ outgoing:
   #
   # Extra seconds to add in order to account for the time taken by the proxy
   #
-  #  extra_proxy_timeout: 10.0
+  #  extra_proxy_timeout: 10
   #
   # uncomment below section only if you have more than one network interface
   # which can be the source of outgoing search requests
@@ -214,228 +213,45 @@ enabled_plugins:
    - 'Tracker URL remover'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
+   - 'Hostnames plugin'  # see 'hostnames' configuration below
    - 'Basic Calculator'
-   - 'Hostname replace'  # see hostname_replace configuration below
    - 'Open Access DOI rewrite'
-   - 'Unit converter plugin'
    - 'Tor check plugin'
+   - 'Unit converter plugin'
 #   # Read the docs before activate: auto-detection of the language could be
 #   # detrimental to users expectations / users can activate the plugin in the
 #   # preferences if they want.
 #   - 'Autodetect search language'
 
-# Configuration of the "Hostname replace" plugin:
+# Configuration of the "Hostnames plugin":
 #
-hostname_replace:
-# Redirect the ad infested wiki
+# hostnames:
+#   replace:
+#     '(.*\.)?youtube\.com$': 'invidious.example.com'
+#     '(.*\.)?youtu\.be$': 'invidious.example.com'
+#     '(.*\.)?reddit\.com$': 'teddit.example.com'
+#     '(.*\.)?redd\.it$': 'teddit.example.com'
+#     '(www\.)?twitter\.com$': 'nitter.example.com'
+#   remove:
+#     - '(.*\.)?facebook.com$'
+#   low_priority:
+#     - '(.*\.)?google(\..*)?$'
+#   high_priority:
+#     - '(.*\.)?wikipedia.org$'
+#
+# Alternatively you can use external files for configuring the "Hostnames plugin":
+#
+# hostnames:
+#  replace: 'rewrite-hosts.yml'
+#
+# Content of 'rewrite-hosts.yml' (place the file in the same directory as 'settings.yml'):
+# '(.*\.)?youtube\.com$': 'invidious.example.com'
+# '(.*\.)?youtu\.be$': 'invidious.example.com'
+#
 
-  '(.*\.)?(?P<subdomain>[^.]+)\.fandom\.com$': 'antifandom.com/\g<subdomain>'
-
-# block bload domains
-
-  '(.*\.)?answeright\.com': false
-  '(.*\.)?askdev\.info': false
-  '(.*\.)?askdev\.io': false
-  '(.*\.)?blogmepost\.com': false
-  '(.*\.)?c-sharpcorner\.com': false
-  '(.*\.)?code-examples\.net': false
-  '(.*\.)?codeflow\.site': false
-  '(.*\.)?codegrepper\.com': false
-  '(.*\.)?command-not-found\.com': false
-  '(.*\.)?com\.de': false
-  '(.*\.)?cyberciti\.biz': false
-  '(.*\.)?geeksforgeeks\.org': false
-  '(.*\.)?gitcode\.net': false
-  '(.*\.)?githubmemory\.com': false
-  '(.*\.)?gitmemory\.cn': false
-  '(.*\.)?gitmemory\.com': false
-  '(.*\.)?i-harness\.com': false
-  '(.*\.)?im-coder\.com': false
-  '(.*\.)?intellipaat\.com': false
-  '(.*\.)?ispycode\.com': false
-  '(.*\.)?issueexplorer\.com': false
-  '(.*\.)?javaer101\.com': false
-  '(.*\.)?programmersought\.com': false
-  '(.*\.)?programmerstart\.com': false
-  '(.*\.)?qastack\.com': false
-  '(.*\.)?reposhub\.com': false
-  '(.*\.)?roboflow\.ai': false
-  '(.*\.)?stackanswers\.net': false
-  '(.*\.)?stackoom\.com': false
-  '(.*\.)?stackovernet\.com': false
-  '(.*\.)?stackovernet\.xyz': false
-  '(.*\.)?stackoverrun\.com': false
-  '(.*\.)?stackshare\.io': false
-  '(.*\.)?tabnine\.com': false
-  '(.*\.)?thetopsites\.net': false
-  '(.*\.)?tutorialspoint\.com': false
-  '(.*\.)?ubuntugeeks\.com': false
-
-# ublock-origin-shitty-copies-filter/stackoverflow-copycats.txt
-
-  '(.*\.)?alwaysemmyhope\.com': false
-  '(.*\.)?amuddycup\.com': false
-  '(.*\.)?answer-id\.com': false
-  '(.*\.)?answerlib\.com': false
-  '(.*\.)?article\.docway\.net': false
-  '(.*\.)?askdev\.vn': false
-  '(.*\.)?athabasca-foto\.com': false
-  '(.*\.)?brocante\.dev': false
-  '(.*\.)?buzzphp\.com': false
-  '(.*\.)?cainiaojiaocheng\.com': false
-  '(.*\.)?cfadnc\.org': false
-  '(.*\.)?christfever\.in': false
-  '(.*\.)?classmethod\.dev': false
-  '(.*\.)?cndgn\.com': false
-  '(.*\.)?codeguides\.site': false
-  '(.*\.)?codehero\.jp': false
-  '(.*\.)?codenong\.com': false
-  '(.*\.)?coder-solution-jp\.com': false
-  '(.*\.)?coderedirect\.com': false
-  '(.*\.)?coderoad\.ru': false
-  '(.*\.)?codersatellite\.com': false
-  '(.*\.)?coder\.work': false
-  '(.*\.)?codewdw\.com': false
-  '(.*\.)?code\.i-harness\.com': false
-  '(.*\.)?coredump\.biz': false
-  '(.*\.)?culinarydegree\.info': false
-  '(.*\.)?debugcn\.com': false
-  '(.*\.)?desenv-web-rp\.com': false
-  '(.*\.)?devbugfix\.com': false
-  '(.*\.)?developreference\.com': false
-  '(.*\.)?domainelespailles\.net': false
-  '(.*\.)?easysavecode\.com': false
-  '(.*\.)?ec-europe\.org': false
-  '(.*\.)?ecnf2016\.org': false
-  '(.*\.)?edupro\.id': false
-  '(.*\.)?examplefiles\.net': false
-  '(.*\.)?exceptionshub\.com': false
-  '(.*\.)?faithcov\.org': false
-  '(.*\.)?farath\.com': false
-  '(.*\.)?fitforlearning\.org': false
-  '(.*\.)?fixes\.pub': false
-  '(.*\.)?fluffyfables\.com': false
-  '(.*\.)?generacodice\.blog': false
-  '(.*\.)?generacodice\.com': false
-  '(.*\.)?generacodice\.it': false
-  '(.*\.)?ghcc\.net': false
-  '(.*\.)?gupgallery\.com': false
-  '(.*\.)?howtofix\.io': false
-  '(.*\.)?imtqy\.com': false
-  '(.*\.)?isolution\.pro': false
-  '(.*\.)?issues-world\.com': false
-  '(.*\.)?it-mure\.jp\.net': false
-  '(.*\.)?it-swarm-fr\.com': false
-  '(.*\.)?it-swarm-ja\.com': false
-  '(.*\.)?it-swarm-ja\.tech': false
-  '(.*\.)?it-swarm\.com\.ru': false
-  '(.*\.)?it-swarm\.jp\.net': false
-  '(.*\.)?itectec\.com': false
-  '(.*\.)?jpcodeqa\.com': false
-  '(.*\.)?jpndev\.com': false
-  '(.*\.)?knews\.vip': false
-  '(.*\.)?kotaeta\.com': false
-  '(.*\.)?laravelquestions\.com': false
-  '(.*\.)?living-sun\.com': false
-  '(.*\.)?lycaeum\.dev': false
-  '(.*\.)?narkive\.jp': false
-  '(.*\.)?newbedev\.com': false
-  '(.*\.)?noblenaz\.org': false
-  '(.*\.)?nuomiphp\.com': false
-  '(.*\.)?ostack\.cn': false
-  '(.*\.)?ourladylakes\.org': false
-  '(.*\.)?overcoder\.net': false
-  '(.*\.)?pakostnici\.com': false
-  '(.*\.)?panaindustrial\.com': false
-  '(.*\.)?pcbconline\.org': false
-  '(.*\.)?pretagteam\.com': false
-  '(.*\.)?projectbackpack\.org': false
-  '(.*\.)?py4u\.net': false
-  '(.*\.)?python-stack\.de': false
-  '(.*\.)?pythonwd\.com': false
-  '(.*\.)?qa-stack\.pl': false
-  '(.*\.)?qapicks\.com': false
-  '(.*\.)?qastack\.cn': false
-  '(.*\.)?qastack\.com\.br': false
-  '(.*\.)?qastack\.com\.de': false
-  '(.*\.)?qastack\.com\.ua': false
-  '(.*\.)?qastack\.co\.in': false
-  '(.*\.)?qastack\.fr': false
-  '(.*\.)?qastack\.id': false
-  '(.*\.)?qastack\.info\.tr': false
-  '(.*\.)?qastack\.in\.th': false
-  '(.*\.)?qastack\.it': false
-  '(.*\.)?qastack\.jp': false
-  '(.*\.)?qastack\.kr': false
-  '(.*\.)?qastack\.mx': false
-  '(.*\.)?qastack\.net\.bd': false
-  '(.*\.)?qastack\.ru': false
-  '(.*\.)?qastack\.vn': false
-  '(.*\.)?qi-u\.com': false
-  '(.*\.)?quabr\.com': false
-  '(.*\.)?quares\.ru': false
-  '(.*\.)?routinepanic\.com': false
-  '(.*\.)?safehavenpetrescue\.org': false
-  '(.*\.)?sch22\.org': false
-  '(.*\.)?semicolonworld\.com': false
-  '(.*\.)?sierrasummit2005\.org': false
-  '(.*\.)?siwib\.org': false
-  '(.*\.)?softwareuser\.asklobster\.com': false
-  '(.*\.)?sqlite\.in': false
-  '(.*\.)?stackfault\.net': false
-  '(.*\.)?stackfinder\.jp\.net': false
-  '(.*\.)?stackfinder\.ru': false
-  '(.*\.)?stackguides\.com': false
-  '(.*\.)?stackify\.dev': false
-  '(.*\.)?stackovergo\.com': false
-  '(.*\.)?stackqna\.com': false
-  '(.*\.)?stormcrow\.dev': false
-  '(.*\.)?sunflowercreations\.org': false
-  '(.*\.)?tech\.wayne-chu\.com': false
-  '(.*\.)?theshuggahpies\.com': false
-  '(.*\.)?tipsfordev\.com': false
-  '(.*\.)?titanwolf\.org': false
-  '(.*\.)?try2explore\.com': false
-  '(.*\.)?tutorialguruji\.com': false
-  '(.*\.)?tutorialmore\.com': false
-  '(.*\.)?ubuntuaa\.com': false
-  '(.*\.)?ubuntu\.buildwebhost\.com': false
-  '(.*\.)?uebu-kaihatsu\.jp\.net': false
-  '(.*\.)?uwenku\.com': false
-  '(.*\.)?voidcc\.com': false
-  '(.*\.)?waymanamechurch\.org': false
-  '(.*\.)?webdevdesigner\.com': false
-  '(.*\.)?webdevqa\.jp\.net': false
-  '(.*\.)?webknox\.com': false
-  '(.*\.)?xiu2\.net': false
-  '(.*\.)?xsprogram\.com': false
-  '(.*\.)?younggeeks\.in': false
-  '(.*\.)?zsharp\.org': false
-
-# ublock-origin-shitty-copies-filter/github-copycats.txt
-
-  '(.*\.)?awesomeopensource.com': false
-  '(.*\.)?bestofcpp.com': false
-  '(.*\.)?bleepcoder.com': false
-  '(.*\.)?findbestopensource.com': false
-  '(.*\.)?gitanswer.com': false
-  '(.*\.)?giters.com': false
-  '(.*\.)?github.innominds.com': false
-  '(.*\.)?githubhelp.com': false
-  '(.*\.)?githubja.com': false
-  '(.*\.)?githubmate.com': false
-  '(.*\.)?githubmemory.com': false
-  '(.*\.)?githubplus.com': false
-  '(.*\.)?gitmemory.cn': false
-  '(.*\.)?gitmemory.com': false
-  '(.*\.)?golangrepo.com': false
-  '(.*\.)?issueexplorer.com': false
-  '(.*\.)?opensourcelibs.com': false
-  '(.*\.)?pythonissues.com': false
-  '(.*\.)?pythonrepo.com': false
-  '(.*\.)?reposhub.com': false
-  '(.*\.)?wenyanet.com': false
-  '(.*\.)?www.higithub.com': false
+hostnames:
+  replace: 'rewrite-hosts.yml'
+  remove: 'remove-hosts.yml'
 
 checker:
   # disable checker when in debug mode
@@ -513,13 +329,13 @@ engines:
     disabled: true
     shortcut: aa
 
-  - name: annas articles
-    engine: annas_archive
-    shortcut: aaa
-    # https://docs.searxng.org/dev/engines/online/annas_archive.html
-    aa_content: 'magazine, book_fiction, book_unknown, book_nonfiction, book_comic'
-    aa_ext: 'pdf'  # pdf, epub, ..
-    aa_sort: oldest'  # newest, oldest, largest, smallest
+#  - name: annas articles
+#    engine: annas_archive
+#    shortcut: aaa
+#    # https://docs.searxng.org/dev/engines/online/annas_archive.html
+#    aa_content: 'magazine, book_fiction, book_unknown, book_nonfiction, book_comic'
+#    aa_ext: 'pdf'  # pdf, epub, ..
+#    aa_sort: oldest'  # newest, oldest, largest, smallest
 
   - name: apk mirror
     engine: apkmirror
@@ -801,6 +617,24 @@ engines:
     shortcut: dh
     categories: [it, packages]
 
+  - name: encyclosearch
+    engine: json_engine
+    shortcut: es
+    categories: general
+    paging: true
+    search_url: https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15
+    results_query: Results
+    url_query: SourceURL
+    title_query: Title
+    content_query: Description
+    disabled: true
+    about:
+      website: https://encyclosearch.org
+      official_api_documentation: https://encyclosearch.org/docs/#/rest-api
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
   - name: erowid
     engine: xpath
     paging: true
@@ -972,6 +806,11 @@ engines:
     engine: fyyd
     shortcut: fy
     timeout: 8.0
+    disabled: true
+
+  - name: geizhals
+    engine: geizhals
+    shortcut: geiz
     disabled: true
 
   - name: genius
@@ -1300,24 +1139,6 @@ engines:
       require_api_key: false
       results: HTML
 
-  - name: azlyrics
-    shortcut: lyrics
-    engine: xpath
-    timeout: 4.0
-    categories: [music, lyrics]
-    paging: true
-    search_url: https://search.azlyrics.com/search.php?q={query}&w=lyrics&p={pageno}
-    url_xpath: //td[@class="text-left visitedlyr"]/a/@href
-    title_xpath: //span/b/text()
-    content_xpath: //td[@class="text-left visitedlyr"]/a/small
-    about:
-      website: https://azlyrics.com
-      wikidata_id: Q66372542
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-
   - name: mastodon users
     engine: mastodon
     mastodon_type: accounts
@@ -1551,6 +1372,7 @@ engines:
   - name: pinterest
     engine: pinterest
     shortcut: pin
+    disabled: true
 
   - name: piped
     engine: piped
@@ -2224,7 +2046,6 @@ engines:
   - name: 1337x
     engine: 1337x
     shortcut: 1337x
-    disabled: true
 
   - name: duden
     engine: duden
@@ -2330,28 +2151,35 @@ engines:
     disabled: true
 
   - name: yacy
+    # https://docs.searxng.org/dev/engines/online/yacy.html
     engine: yacy
     categories: general
     search_type: text
     base_url:
       - https://yacy.searchlab.eu
-      - https://search.lomig.me
-      - https://yacy.ecosys.eu
-      - https://search.webproject.link
+      # see https://github.com/searxng/searxng/pull/3631#issuecomment-2240903027
+      # - https://search.kyun.li
+      # - https://yacy.securecomcorp.eu
+      # - https://yacy.myserv.ca
+      # - https://yacy.nsupdate.info
+      # - https://yacy.electroncash.de
     shortcut: ya
     disabled: true
-    # required if you aren't using HTTPS for your local yacy instance
-    # https://docs.searxng.org/dev/engines/online/yacy.html
-    # enable_http: true
-    # timeout: 3.0
-    # search_mode: 'global'
+    # if you aren't using HTTPS for your local yacy instance disable https
+    # enable_http: false
+    search_mode: 'global'
+    # timeout can be reduced in 'local' search mode
+    timeout: 5.0
 
   - name: yacy images
     engine: yacy
+    network: yacy
     categories: images
     search_type: image
     shortcut: yai
     disabled: true
+    # timeout can be reduced in 'local' search mode
+    timeout: 5.0
 
   - name: rumble
     engine: rumble
@@ -2487,6 +2315,7 @@ engines:
     categories: [general, web]
     brave_category: search
     # brave_spellcheck: true
+    disabled: true
 
   - name: brave.images
     engine: brave
@@ -2494,6 +2323,7 @@ engines:
     shortcut: brimg
     categories: [images, web]
     brave_category: images
+    disabled: true
 
   - name: brave.videos
     engine: brave
@@ -2501,6 +2331,7 @@ engines:
     shortcut: brvid
     categories: [videos, web]
     brave_category: videos
+    disabled: true
 
   - name: brave.news
     engine: brave
@@ -2508,6 +2339,7 @@ engines:
     shortcut: brnews
     categories: news
     brave_category: news
+    disabled: true
 
   # - name: brave.goggles
   #   engine: brave
@@ -2654,9 +2486,9 @@ engines:
 doi_resolvers:
   oadoi.org: 'https://oadoi.org/'
   doi.org: 'https://doi.org/'
-  doai.io: 'https://dissem.in/'
+  dissem.in: 'https://dissem.in/'
   sci-hub.se: 'https://sci-hub.se/'
   sci-hub.st: 'https://sci-hub.st/'
   sci-hub.ru: 'https://sci-hub.ru/'
 
-default_doi_resolver: 'oadoi.org'
+default_doi_resolver: 'sci-hub.se'
