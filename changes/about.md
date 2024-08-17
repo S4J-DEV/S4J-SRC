@@ -10,6 +10,8 @@ its users.
 
 - [LibRedirect] is a software I personally suggest test out as it allows for redirecting popular/crontrivercial platforms to alternitive [FOSS]/[Libre] frontends that typically respect users privacy to a higher degree.
 
+- [HetrixTools] and spefically the [HetrixToolsUptimeMonitor] is an amazing free tool for uptime tracking, and it is actually what I use for this site! Definetly check it out if you need uptime tracking.
+
 - More To Come, (Maybe)
 
 ## My Side Projects.
@@ -19,8 +21,6 @@ its users.
 - I also made/significantly contribicuted to a [Zorin OS Upgrader] tool to convert core versions to pro versions without paying for them. The tool comes with no support however and you use at your own risk!
 
 - For those who have screen burn in, i also made a lazy [Burn In Bandaid] to aid with the effects of screen burn in.
-
-- (DISCONTINUED) I also made a windows script for messing with people "non-destructively" however it proved too powerful. if you really want it it is available from my [TrollScript] repo... however i wont be held responsable if you mess something up with it. you have been warned!
 
 ## Make SearchForJohn better.
 
@@ -45,10 +45,10 @@ in digital freedom, feel free to make SearchForJohn your default search engine!
 SearchForJohn supports [OpenSearch].  For more information on changing your default
 search engine, see your browser's documentation:
 
-- [Firefox]
+- [Firefox] - Behind the link, you will also find some useful instructions for Firefox.
 - [Microsoft Edge] - Behind the link, you will also find some useful instructions
   for Chrome and Safari.
-- [Chromium]- based browsers only add websites that the user navigates to without
+- [Chromium] - based browsers only add websites that the user navigates to without
   a path.
 
 ## How does it work?
@@ -59,14 +59,12 @@ queries with searches on other platforms without storing search data.  SearchFor
 can be added to your browser's search bar; moreover, it can be set as the
 default search engine.
 
-The {{link('stats page', 'stats')}} contains some useful anonymous usage
-statistics about the engines used.
-
+[HetrixTools]: https://hetrixtools.com/
+[HetrixToolsUptimeMonitor]: https://hetrixtools.com/uptime-monitor/
 [LibRedirect]: https://libredirect.github.io/
 [FOSS]: https://wikipedia.org/wiki/Free_and_open-source_software/
 [Libre]: https://wikipedia.org/wiki/Free_software/
 [Burn In Bandaid]: https://bandaid.searchforjohn.com/
-[TrollScript]: https://trollscript.searchforjohn.com/
 [Zorin OS Upgrader]: https://zorin.searchforjohn.com/
 [GenPWD]: https://genpwd.searchforjohn.com/
 [BlueSky]: https://bsky.app/profile/searchforjohn.com/
@@ -77,9 +75,9 @@ statistics about the engines used.
 [Alternate Square]: https://alt-donate.searchforjohn.com
 [SearXNG]: https://github.com/searxng/searxng/
 [metasearch engine]: https://en.wikipedia.org/wiki/Metasearch_engine/
-[Weblate]: https://translate.codeberg.org/projects/searxng/
+[Weblate]: https://weblate.bubu1.eu/projects/searxng/
 [Seeks project]: https://beniz.github.io/seeks/
-[OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-[Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
-[Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine
-[Chromium]: https://www.chromium.org/tab-to-search
+[OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md/
+[Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox/
+[Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine/
+[Chromium]: https://www.chromium.org/tab-to-search/
