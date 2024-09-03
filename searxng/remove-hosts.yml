@@ -688,6 +688,7 @@
   - '(.*\.)?login-kucoin.net$'
   - '(.*\.)?lokasi.live$'
   - '(.*\.)?lowongan.live$'
+  - '(.*\.)?lubuntu.net$'
   - '(.*\.)?lycaeum.dev$'
   - '(.*\.)?macosrepo.com$'
   - '(.*\.)?madanswer.com$'
@@ -1047,6 +1048,7 @@
   - '(.*\.)?propsproject.org$'
   - '(.*\.)?propsproject.tech$'
   - '(.*\.)?propsprojects.com$'
+  - '(.*\.)?protonge.com$'
   - '(.*\.)?protostokenhub.com$'
   - '(.*\.)?proubuntu.ru$'
   - '(.*\.)?pullanswer.com$'
@@ -1710,3 +1712,4 @@
   - '(.*\.)?zilliaq.com$'
   - '(.*\.)?zsharp.org$'
   - '(.*\.)?zzun.app$'
+  

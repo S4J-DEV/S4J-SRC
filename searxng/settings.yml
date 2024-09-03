@@ -329,13 +329,13 @@ engines:
     disabled: true
     shortcut: aa
 
-#  - name: annas articles
-#    engine: annas_archive
-#    shortcut: aaa
-#    # https://docs.searxng.org/dev/engines/online/annas_archive.html
-#    aa_content: 'magazine, book_fiction, book_unknown, book_nonfiction, book_comic'
-#    aa_ext: 'pdf'  # pdf, epub, ..
-#    aa_sort: oldest'  # newest, oldest, largest, smallest
+  # - name: annas articles
+  #   engine: annas_archive
+  #   shortcut: aaa
+  #   # https://docs.searxng.org/dev/engines/online/annas_archive.html
+  #   aa_content: 'magazine' # book_fiction, book_unknown, book_nonfiction, book_comic
+  #   aa_ext: 'pdf'  # pdf, epub, ..
+  #   aa_sort: oldest'  # newest, oldest, largest, smallest
 
   - name: apk mirror
     engine: apkmirror
@@ -1809,6 +1809,22 @@ engines:
     shortcut: us
     disabled: true
 
+  - name: yandex
+    engine: yandex
+    categories: general
+    search_type: web
+    shortcut: yd
+    disabled: true
+    inactive: true
+
+  - name: yandex images
+    engine: yandex
+    categories: images
+    search_type: images
+    shortcut: ydi
+    disabled: true
+    inactive: true
+
   - name: yandex music
     engine: yandex_music
     shortcut: ydm
@@ -2315,7 +2331,6 @@ engines:
     categories: [general, web]
     brave_category: search
     # brave_spellcheck: true
-    disabled: true
 
   - name: brave.images
     engine: brave
@@ -2323,7 +2338,6 @@ engines:
     shortcut: brimg
     categories: [images, web]
     brave_category: images
-    disabled: true
 
   - name: brave.videos
     engine: brave
@@ -2331,7 +2345,6 @@ engines:
     shortcut: brvid
     categories: [videos, web]
     brave_category: videos
-    disabled: true
 
   - name: brave.news
     engine: brave
@@ -2339,7 +2352,6 @@ engines:
     shortcut: brnews
     categories: news
     brave_category: news
-    disabled: true
 
   # - name: brave.goggles
   #   engine: brave
