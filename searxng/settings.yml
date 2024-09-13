@@ -1411,7 +1411,7 @@ engines:
     disabled: true
     inactive: true
     pixiv_image_proxies:
-      # - https://pximg.example.org
+      - https://pximg.example.org
       # A proxy is required to load the images. Hosting an image proxy server
       # for Pixiv:
       #    --> https://pixivfe.pages.dev/hosting-image-proxy-server/
@@ -1568,6 +1568,24 @@ engines:
     shortcut: re
     page_size: 25
     disabled: true
+
+  - name: right dao
+    engine: xpath
+    paging: true
+    page_size: 12
+    search_url: https://rightdao.com/search?q={query}&start={pageno}
+    results_xpath: //div[contains(@class, "description")]
+    url_xpath: ../div[contains(@class, "title")]/a/@href
+    title_xpath: ../div[contains(@class, "title")]
+    content_xpath: .
+    categories: general
+    shortcut: rd
+    disabled: true
+    about:
+      website: https://rightdao.com/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
   - name: rottentomatoes
     engine: rottentomatoes
