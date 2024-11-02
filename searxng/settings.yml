@@ -15,6 +15,8 @@ brand:
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 1
+  # Favicon Resolver
+  favicon_resolver: ""
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
   # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
@@ -130,13 +132,18 @@ ui:
 #
 preferences:
   lock:
-#    - categories
-    - pref_theme
-    - theme
-#    - pref_ui_locale
+    - pref_hotkeys
+    - hotkeys
+    - favicon
+#     - pref_tokens
+#     - pref_theme
+#     - language
 #     - autocomplete
 #     - method
 #     - query_in_title
+#     - categories
+#     - theme
+#     - pref_ui_locale
 
 # searx supports result proxification using an external service:
 # https://github.com/asciimoo/morty uncomment below section if you have running
@@ -475,6 +482,23 @@ engines:
     shortcut: chef
     # to show premium or plus results too:
     # skip_premium: false
+
+  - name: cloudflareai
+    engine: cloudflareai
+    shortcut: cfai
+    # get api token and accont id from https://developers.cloudflare.com/workers-ai/get-started/rest-api/
+    cf_account_id: 'your_cf_accout_id'
+    cf_ai_api: 'your_cf_api'
+    # create your ai gateway by https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/
+    cf_ai_gateway: 'your_cf_ai_gateway_name'
+    # find the model name from https://developers.cloudflare.com/workers-ai/models/#text-generation
+    cf_ai_model: 'ai_model_name'
+    # custom your preferences
+    # cf_ai_model_display_name: 'Cloudflare AI'
+    # cf_ai_model_assistant: 'prompts_for_assistant_role'
+    # cf_ai_model_system: 'prompts_for_system_role'
+    timeout: 30
+    disabled: true
 
   - name: core.ac.uk
     engine: core
@@ -827,24 +851,22 @@ engines:
     timeout: 10
 
   - name: gitlab
-    engine: json_engine
-    paging: true
-    search_url: https://gitlab.com/api/v4/projects?search={query}&page={pageno}
-    url_query: web_url
-    title_query: name_with_namespace
-    content_query: description
-    page_size: 20
-    categories: [it, repos]
+    engine: gitlab
+    base_url: https://gitlab.com
     shortcut: gl
-    timeout: 10.0
     disabled: true
     about:
-      website: https://about.gitlab.com/
+      website: https://gitlab.com/
       wikidata_id: Q16639197
-      official_api_documentation: https://docs.gitlab.com/ee/api/
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+
+  - name: gnome
+    engine: gitlab
+    base_url: https://gitlab.gnome.org
+    shortcut: gn
+    disabled: true
+    about:
+      website: https://gitlab.gnome.org
+      wikidata_id: Q44316
 
   - name: github
     engine: github
@@ -1305,6 +1327,12 @@ engines:
       use_official_api: false
       require_api_key: false
       results: JSON
+
+  - name: openlibrary
+    engine: openlibrary
+    shortcut: ol
+    timeout: 5
+    disabled: true
 
   - name: openmeteo
     engine: open_meteo
@@ -2076,6 +2104,16 @@ engines:
   #    limit: 10
   #    query_str: 'SELECT * from mytable WHERE fieldname=%(query)s'
   #    shortcut: mysql
+
+  # Required dependency: mariadb
+  #  - name: mariadb
+  #    engine: mariadb_server
+  #    database: mydatabase
+  #    username: user
+  #    password: pass
+  #    limit: 10
+  #    query_str: 'SELECT * from mytable WHERE fieldname=%(query)s'
+  #    shortcut: mdb
 
   - name: 1337x
     engine: 1337x

@@ -642,6 +642,7 @@
   - '(.*\.)?joyk.com$'
   - '(.*\.)?jpcodeqa.com$'
   - '(.*\.)?jpndev.com$'
+  - '(.*\.)?jpralves.net$'
   - '(.*\.)?jscodetips.com$'
   - '(.*\.)?jsrepos.com$'
   - '(.*\.)?jtuto.com$'
@@ -1002,6 +1003,7 @@
   - '(.*\.)?oraask.com$'
   - '(.*\.)?oracles-network.org$'
   - '(.*\.)?oracls.network$'
+  - '(.*\.)?orcaslicer.net$'
   - '(.*\.)?ostack.cn$'
   - '(.*\.)?ourladylakes.org$'
   - '(.*\.)?ourpython.com$'
@@ -1712,4 +1714,3 @@
   - '(.*\.)?zilliaq.com$'
   - '(.*\.)?zsharp.org$'
   - '(.*\.)?zzun.app$'
-  

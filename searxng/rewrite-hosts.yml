@@ -1,1 +1,2 @@
-  '(.*\.)?(?P<subdomain>[^.]+)\.fandom\.com$': 'breezewiki.com/\g<subdomain>'
+  '^www\.fandom\.com(/.*)?$': 'antifandom.com'
+  '^(?!www\.)(?P<subdomain>[^.]+)\.fandom\.com$': '\g<subdomain>.antifandom.com'
