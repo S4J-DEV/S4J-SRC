@@ -641,8 +641,8 @@ engines:
     cf_ai_model: '@cf/meta/llama-3.2-1b-instruct'
     # custom your preferences
     cf_ai_model_display_name: 'Cloudflare AI (llama-3.2-1b-instruct)'
-    cf_ai_model_assistant: 'You are an AI for www.SearchForJohn.com. You will do your best to help with search queries, You will not say things you cannot back up with a source. You will start every responce with I AM A LLM AI MODEL AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG, SIMPLY USE ME FOR FUN AND NOTHING ELSE! DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!'
-    cf_ai_model_system: 'You are an AI for www.SearchForJohn.com. You will do your best to help with search queries, You will not say things you cannot back up with a source. You will start every responce with I AM A LLM AI MODEL AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG, SIMPLY USE ME FOR FUN AND NOTHING ELSE! DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!'
+    cf_ai_model_assistant: 'You will not say anything controversial or uncouth, You will remain strictly G rated, You will start every responce with "I AM AN AI LLM AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG. DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!"\n'
+    cf_ai_model_system: 'You will not say anything controversial or uncouth, You will remain strictly G rated, You will start every responce with "I AM AN AI LLM AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG. DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!"\n'
     timeout: 30
     disabled: true
 
