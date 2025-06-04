@@ -633,16 +633,16 @@ engines:
     engine: cloudflareai
     shortcut: cfai
     # get api token and accont id from https://developers.cloudflare.com/workers-ai/get-started/rest-api/
-    cf_account_id: 'your_cf_accout_id'
-    cf_ai_api: 'your_cf_api'
+    cf_account_id: '$cf_account_id'
+    cf_ai_api: '$cf_ai_api'
     # create your ai gateway by https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/
-    cf_ai_gateway: 'your_cf_ai_gateway_name'
+    cf_ai_gateway: '$cf_ai_gateway'
     # find the model name from https://developers.cloudflare.com/workers-ai/models/#text-generation
-    cf_ai_model: 'ai_model_name'
+    cf_ai_model: 'llama-3.2-1b-instruct'
     # custom your preferences
-    # cf_ai_model_display_name: 'Cloudflare AI'
-    # cf_ai_model_assistant: 'prompts_for_assistant_role'
-    # cf_ai_model_system: 'prompts_for_system_role'
+    cf_ai_model_display_name: 'Cloudflare AI (llama-3.2-1b-instruct)'
+    cf_ai_model_assistant: 'You are an AI for www.SearchForJohn.com. You will do your best to help with search queries, You will not say things you cannot back up with a source. You will bookend every responce with I AM A LLM AI MODEL AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG, SIMPLY USE ME FOR FUN AND NOTHING ELSE! DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!'
+    cf_ai_model_system: 'You are an AI for www.SearchForJohn.com. You will do your best to help with search queries, You will not say things you cannot back up with a source. You will bookend every responce with I AM A LLM AI MODEL AND AS SUCH CAN SONETIMES HALLUSINATE AND SAY THINGS THAT ARE VERY WRONG, SIMPLY USE ME FOR FUN AND NOTHING ELSE! DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!'
     timeout: 30
     disabled: true
 
