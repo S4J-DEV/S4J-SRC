@@ -631,7 +631,7 @@ services:
 
       - type: bind
         source: ./changes/translations/th/LC_MESSAGES/messages.po
-        target: /usr/local	searxng/searx/translations/th/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/th/LC_MESSAGES/messages.po
 
       - type: bind
         source: ./changes/translations/tr/LC_MESSAGES/messages.mo
