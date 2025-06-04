@@ -1,0 +1,16 @@
+[Unit]
+Description=S4J service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=on-failure
+
+Environment=SEARXNG_DOCKERCOMPOSEFILE="/root/S4J/docker-compose.yaml"
+
+WorkingDirectory=/root/S4J/
+ExecStart=/usr/local/bin/docker-compose -f ${SEARXNG_DOCKERCOMPOSEFILE} up -d --remove-orphans
+ExecStop=/usr/local/bin/docker-compose -f ${SEARXNG_DOCKERCOMPOSEFILE} down
+
+[Install]
+WantedBy=multi-user.target

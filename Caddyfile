@@ -1,111 +1,75 @@
+# ─── GLOBAL OPTIONS ─────────────────────────────────────────────────────────
 {
-  admin off
+	admin off
 }
 
+# ─── SITE BLOCK ────────────────────────────────────────────────────────────
 {$SEARXNG_HOSTNAME} {
-log {
-    output discard
-}
+	# ── NO LOGGING ────────────────────────────────────────
+	log {
+		output discard
+	}
 
-#   tls {$SEARXNG_TLS}
-tls {
-    protocols tls1.3
-}
+	# ── MATCHERS (all defined here!) ────────────────────────────────────────
+	@api {
+		path /config /healthz /stats/errors /stats/checker
+	}
+	@static {
+		path /static/*
+	}
+	@notstatic {
+		not path /static/*
+	}
+	@imageproxy {
+		path /image_proxy
+	}
+	@notimageproxy {
+		not path /image_proxy
+	}
 
-@api {
-    path /config
-    path /healthz
-    path /stats/errors
-    path /stats/checker
-}
+	# ── BASE SECURITY HEADERS ────────────────────────────────────────────────
+	header {
+		X-Frame-Options DENY
+		Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+		X-Content-Type-Options nosniff
+		Permissions-Policy "accelerometer=(),camera=(),cross-origin-isolated=(),display-capture=(),encrypted-media=(),gamepad=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),midi=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),usb=()"
+		Referrer-Policy no-referrer
+		X-Robots-Tag "noarchive, nofollow"
+		Cross-Origin-Resource-Policy "same-site"
+		Access-Control-Allow-Origin "https://www.searchforjohn.com"
+		Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self' 'nonce-{http.request.uuid}' static.cloudflareinsights.com ajax.cloudflare.com; style-src 'self'; form-action 'self'; font-src 'self'; frame-ancestors 'none'; frame-src 'self' https://www.youtube-nocookie.com/ https://upload.wikimedia.org/ https://srv.piped.video/ https://pipedapi.kavin.rocks/ https://pipedapi.adminforge.de/ https://pipedapi.ducks.party/ https://api.piped.private.coffee/ https://videovortex.tv/ https://www.dailymotion.com/ https://yewtu.be/ https://*.freediverse.com/videos/ https://w.soundcloud.com/player/ https://www.mixcloud.com/ https://player-widget.mixcloud.com/ https://bandcamp.com/; child-src 'none'; worker-src 'none'; base-uri 'self'; connect-src 'self' cloudflareinsights.com; img-src 'self' data: *; object-src 'none'; require-trusted-types-for 'script';"
+		-Server
+	}
 
-@static {
-    path /static/*
-}
+	# ── API CORS ──────────────────────────────────────────────────────────────
+	header @api {
+		Access-Control-Allow-Methods "GET, OPTIONS"
+		Access-Control-Allow-Origin "https://www.searchforjohn.com"
+	}
 
-@notstatic {
-    not path /static/*
-}
+	# ── CACHE HINTS ───────────────────────────────────────────────────────────
+	header @static {
+		Cache-Control "public, max-age=31536000" defer
+	}
+	header @notstatic {
+		Cache-Control "no-cache, no-store"
+	}
 
-@imageproxy {
-    path /image_proxy
-}
+	# ── IMAGE-PROXY CSP (reuse X-Nonce) ─────────────────────────────────────
+	header @imageproxy {
+		Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self' 'nonce-{http.request.uuid}' static.cloudflareinsights.com ajax.cloudflare.com; style-src 'self'; form-action 'self'; font-src 'self'; frame-ancestors 'none'; frame-src 'self' https://www.youtube-nocookie.com/ https://upload.wikimedia.org/ https://srv.piped.video/ https://pipedapi.kavin.rocks/ https://pipedapi.adminforge.de/ https://pipedapi.ducks.party/ https://api.piped.private.coffee/ https://videovortex.tv/ https://www.dailymotion.com/ https://yewtu.be/ https://*.freediverse.com/videos/ https://w.soundcloud.com/player/ https://www.mixcloud.com/ https://player-widget.mixcloud.com/ https://bandcamp.com/; child-src 'none'; worker-src 'none'; base-uri 'self'; connect-src 'self' cloudflareinsights.com; img-src 'self' data: *; object-src 'none'; require-trusted-types-for 'script';"
+	}
+	header @notimageproxy {
+		Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self' 'nonce-{http.request.uuid}' static.cloudflareinsights.com ajax.cloudflare.com; style-src 'self'; form-action 'self'; font-src 'self'; frame-ancestors 'none'; frame-src 'self' https://www.youtube-nocookie.com/ https://upload.wikimedia.org/ https://srv.piped.video/ https://pipedapi.kavin.rocks/ https://pipedapi.adminforge.de/ https://pipedapi.ducks.party/ https://api.piped.private.coffee/ https://videovortex.tv/ https://www.dailymotion.com/ https://yewtu.be/ https://*.freediverse.com/videos/ https://w.soundcloud.com/player/ https://www.mixcloud.com/ https://player-widget.mixcloud.com/ https://bandcamp.com/; child-src 'none'; worker-src 'none'; base-uri 'self'; connect-src 'self' cloudflareinsights.com; img-src 'self' data: *; object-src 'none'; require-trusted-types-for 'script';"
+	}
 
-@notimageproxy {
-    not path /image_proxy
-}
+	# ── APP BACKEND ─────────────────────────────────────────────────────────
+	handle {
+		encode zstd gzip
 
-header {
-  
-    # disable x-frame
-    X-Frame-Options "DENY"
-    
-    # Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
-    Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
-
-    # Enable cross-site filter (XSS) and tell browser to block detected attacks
-    X-XSS-Protection "1; mode=block"
-
-    # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
-    X-Content-Type-Options "nosniff"
-
-    # Disable some features
-    Permissions-Policy "accelerometer=(),autoplay=(),camera=(),encrypted-media=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),sync-xhr=(),usb=()"
-
-    # Disable some features (legacy)
-    #Feature-Policy "accelerometer 'none'; autoplay 'none';camera 'none';encrypted-media 'none'; geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none';sync-xhr 'none';usb 'none';"
-
-    # Referer
-    Referrer-Policy "no-referrer"
-
-    # X-Robots-Tag
-    X-Robots-Tag "noarchive, nofollow"
-
-    # Remove Server header
-    -Server
-
-    # set CSP
-    Content-Security-Policy "frame-ancestors 'self';block-all-mixed-content;default-src 'none';script-src 'self' static.cloudflareinsights.com *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com;style-src 'self';object-src 'none';frame-src 'self' kolektiva.media peertube.sieprawski.pl tube.spdns.org www.youtube-nocookie.com www.youtube.com beetoons.tv odysee.com commons.wikimedia.org media.ccc.de cdn.media.ccc.de ccc.de www.bilibili.com upload.wikimedia.org inv.tux.pizza diode.zone *.freediverse.com player.vimeo.com www.dailymotion.com www.deezer.com invidious.privacydev.net *.searchforjohn.com bandcamp.com srv.piped.video www.mixcloud.com w.soundcloud.com www.youtube-nocookie.com player.vimeo.com www.dailymotion.com www.deezer.com *.searchforjohn.com;child-src 'self';img-src 'self' data: www.w3.org *.tile.openstreetmap.org *.searchforjohn.com *.tile.openstreetmap.org;font-src 'self';connect-src 'self' *.cloudflareinsights.com overpass-api.de *.searchforjohn.com;manifest-src 'self';base-uri 'self';form-action 'self' github.com/searxng/searxng/issues/new;media-src 'self';prefetch-src 'self';worker-src 'self';script-src-elem 'self' *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com"
-
-}
-
-header @api {
-    Access-Control-Allow-Methods "GET, OPTIONS"
-    Access-Control-Allow-Origin  "*"
-}
-
-# Cache
-header @static {
-    # Cache
-    Cache-Control "public, max-age=31536000"
-    defer
-}
-
-header @notstatic {
-    # No Cache
-    Cache-Control "no-cache, no-store"
-    Pragma "no-cache"
-}
-  
-# CSP (see http://content-security-policy.com/ )
-header @imageproxy {
-     Content-Security-Policy "frame-ancestors 'self';block-all-mixed-content;default-src 'none';script-src 'self' static.cloudflareinsights.com *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com;style-src 'self';object-src 'none';frame-src 'self' kolektiva.media peertube.sieprawski.pl tube.spdns.org www.youtube-nocookie.com www.youtube.com beetoons.tv odysee.com commons.wikimedia.org media.ccc.de cdn.media.ccc.de ccc.de www.bilibili.com upload.wikimedia.org inv.tux.pizza diode.zone *.freediverse.com player.vimeo.com www.dailymotion.com www.deezer.com invidious.privacydev.net *.searchforjohn.com bandcamp.com srv.piped.video www.mixcloud.com w.soundcloud.com www.youtube-nocookie.com player.vimeo.com www.dailymotion.com www.deezer.com *.searchforjohn.com;child-src 'self';img-src 'self' data: www.w3.org *.tile.openstreetmap.org *.searchforjohn.com *.tile.openstreetmap.org;font-src 'self';connect-src 'self' *.cloudflareinsights.com overpass-api.de *.searchforjohn.com;manifest-src 'self';base-uri 'self';form-action 'self' github.com/searxng/searxng/issues/new;media-src 'self';prefetch-src 'self';worker-src 'self';script-src-elem 'self' *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com"
-
-}
-
-header @notimageproxy {
-       Content-Security-Policy "frame-ancestors 'self';block-all-mixed-content;default-src 'none';script-src 'self' static.cloudflareinsights.com *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com;style-src 'self';object-src 'none';frame-src 'self' kolektiva.media peertube.sieprawski.pl tube.spdns.org www.youtube-nocookie.com www.youtube.com beetoons.tv odysee.com commons.wikimedia.org media.ccc.de cdn.media.ccc.de ccc.de www.bilibili.com upload.wikimedia.org inv.tux.pizza diode.zone *.freediverse.com player.vimeo.com www.dailymotion.com www.deezer.com invidious.privacydev.net *.searchforjohn.com bandcamp.com srv.piped.video www.mixcloud.com w.soundcloud.com www.youtube-nocookie.com player.vimeo.com www.dailymotion.com www.deezer.com *.searchforjohn.com;child-src 'self';img-src 'self' data: www.w3.org *.tile.openstreetmap.org *.searchforjohn.com *.tile.openstreetmap.org;font-src 'self';connect-src 'self' *.cloudflareinsights.com overpass-api.de *.searchforjohn.com;manifest-src 'self';base-uri 'self';form-action 'self' github.com/searxng/searxng/issues/new;media-src 'self';prefetch-src 'self';worker-src 'self';script-src-elem 'self' *.searchforjohn.com ajax.cloudflare.com *.cloudflareinsights.com"
-
-}
-
-# SearXNG
-handle {
-    encode zstd gzip
-
-    reverse_proxy localhost:8080 {
-           header_up X-Forwarded-Port {http.request.port}
-           header_up X-Forwarded-Proto {http.request.scheme}
-    }
-}
-
+		reverse_proxy localhost:8080 {
+			header_up X-Forwarded-Port {http.request.port}
+			header_up X-Forwarded-Proto {http.request.scheme}
+		}
+	}
 }

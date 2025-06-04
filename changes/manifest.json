@@ -1,0 +1,29 @@
+{
+  "js/s4j.head.js": {
+    "file": "js/s4j.head.min.js",
+    "name": "js/s4j.head.min",
+    "src": "js/s4j.head.js",
+    "isEntry": true
+  },
+  "js/s4j.js": {
+    "file": "js/s4j.min.js",
+    "name": "js/s4j.min",
+    "src": "js/s4j.js",
+    "isEntry": true
+  },
+  "less/rss.less": {
+    "file": "css/rss.min.css",
+    "src": "less/rss.less",
+    "isEntry": true
+  },
+  "less/style-ltr.less": {
+    "file": "css/s4j.min.css",
+    "src": "less/style-ltr.less",
+    "isEntry": true
+  },
+  "less/style-rtl.less": {
+    "file": "css/s4j-rtl.min.css",
+    "src": "less/style-rtl.less",
+    "isEntry": true
+  }
+}

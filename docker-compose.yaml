@@ -1,115 +1,696 @@
-#version: '3.7'
+version: "3.7"
 
 services:
 
   caddy:
     container_name: caddy
-    image: caddy:2-alpine
+    image: docker.io/library/caddy:2-alpine
     network_mode: host
+    restart: unless-stopped
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
-      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost}
       - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_BIND_SERVICE
-      - DAC_OVERRIDE
-
-  redis:
-    container_name: redis
-    image: redis:alpine
-    command: redis-server --save "" --appendonly "no"
-    networks:
-      - searxng
-    tmpfs:
-      - /var/lib/redis
-    cap_drop:
-      - ALL
-    cap_add:
-      - SETGID
-      - SETUID
-      - DAC_OVERRIDE
-
-  searxng:
-    container_name: searxng
-    image: searxng/searxng:latest
-#    image: elestio/searxng:latest
-    networks:
-      - searxng
-    ports:
-#     - "127.0.0.1:8080:8080"
-     - "8080:8080"
-    volumes:
-      - ./searxng:/etc/searxng:rw
-        
-      - type: bind
-        source: ./changes/no_results.html
-        target: /usr/local/searxng/searx/templates/simple/messages/no_results.html
-
-      - type: bind
-        source: ./changes/s4j.png
-        target: /usr/local/searxng/searx/static/themes/simple/img/searxng.png
-        
-      - type: bind
-        source: ./changes/index.html
-        target: /usr/local/searxng/searx/templates/simple/index.html
-        
-      - type: bind
-        source: ./changes/base.html
-        target: /usr/local/searxng/searx/templates/simple/base.html
-        
-      - type: bind
-        source: ./changes/404.html
-        target: /usr/local/searxng/searx/templates/simple/404.html
-        
-      - type: bind
-        source: ./changes/about.md
-        target: /usr/local/searxng/searx/infopage/en/about.md
-        
-      - type: bind
-        source: ./changes/search-syntax.md
-        target: /usr/local/searxng/searx/infopage/en/search-syntax.md
-        
-      - type: bind
-        source: ./changes/about.md
-        target: /usr/local/searxng/searx/infopage/id/about.md
-        
-      - type: bind
-        source: ./changes/search-syntax.md
-        target: /usr/local/searxng/searx/infopage/id/search-syntax.md
-        
-      - type: bind
-        source: ./changes/about.md
-        target: /usr/local/searxng/searx/infopage/de/about.md
-        
-      - type: bind
-        source: ./changes/search-syntax.md
-        target: /usr/local/searxng/searx/infopage/de/search-syntax.md
-
-    environment:
-      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
-#      - BIND_ADDRESS=127.0.0.1:8080
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-      - DAC_OVERRIDE
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "1"
+
+  redis:
+    container_name: redis
+    image: docker.io/valkey/valkey:8-alpine
+    command: valkey-server --save 30 1 --loglevel warning
+    restart: unless-stopped
+    networks:
+      - searxng
+    volumes:
+      - valkey-data2:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
+  searxng:
+    container_name: searxng
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    networks:
+      - searxng
+    ports:
+      - "127.0.0.1:8080:8080"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        sed 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
+        /usr/local/searxng/searx/static/themes/simple/js/searxng.min.js \
+        > /usr/local/searxng/searx/static/themes/simple/js/s4j.min.js && \
+
+        sed 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
+          /usr/local/searxng/searx/static/themes/simple/js/searxng.min.js.map \
+          > /usr/local/searxng/searx/static/themes/simple/js/s4j.min.js.map && \
+
+        cp /usr/local/searxng/searx/static/themes/simple/js/searxng.head.min.js \
+          /usr/local/searxng/searx/static/themes/simple/js/s4j.head.min.js && \
+        exec /usr/local/searxng/entrypoint.sh
+
+#         cp /usr/local/searxng/searx/static/themes/simple/css/searxng.min.css \
+#            /usr/local/searxng/searx/static/themes/simple/css/s4j.min.css && \
+#         cp /usr/local/searxng/searx/static/themes/simple/css/searxng-rtl.min.css \
+#            /usr/local/searxng/searx/static/themes/simple/css/s4j-rtl.min.css && \
+
+    volumes:
+      - ./searxng:/etc/searxng:rw
+
+      - type: bind
+        source: ./changes/image_proxy.html
+        target: /usr/local/searxng/searx/templates/simple/preferences/image_proxy.html
+
+      - type: bind
+        source: ./changes/hotkeys.html
+        target: /usr/local/searxng/searx/templates/simple/preferences/hotkeys.html
+
+      - type: bind
+        source: ./changes/language.html
+        target: /usr/local/searxng/searx/templates/simple/preferences/language.html
+
+      - type: bind
+        source: ./changes/theme.html
+        target: /usr/local/searxng/searx/templates/simple/preferences/theme.html
+
+      - type: bind
+        source: ./changes/no_results.html
+        target: /usr/local/searxng/searx/templates/simple/messages/no_results.html
+
+      - type: bind
+        source: ./changes/cookies.html
+        target: /usr/local/searxng/searx/templates/simple/preferences/cookies.html
+
+      - type: bind
+        source: ./changes/s4j.png
+        target: /usr/local/searxng/searx/static/themes/simple/img/searxng.png
+
+      - type: bind
+        source: ./changes/s4j.png
+        target: /usr/local/searxng/searx/static/themes/simple/img/s4j.png
+
+      - type: bind
+        source: ./changes/s4j.svg
+        target: /usr/local/searxng/searx/static/themes/simple/img/searxng.svg
+
+      - type: bind
+        source: ./changes/s4j.svg
+        target: /usr/local/searxng/searx/static/themes/simple/img/s4j.svg
+
+      - type: bind
+        source: ./changes/index.html
+        target: /usr/local/searxng/searx/templates/simple/index.html
+
+      - type: bind
+        source: ./changes/base.html
+        target: /usr/local/searxng/searx/templates/simple/base.html
+
+      - type: bind
+        source: ./changes/page_with_header.html
+        target: /usr/local/searxng/searx/templates/simple/page_with_header.html
+
+      - type: bind
+        source: ./changes/404.html
+        target: /usr/local/searxng/searx/templates/simple/404.html
+
+      - type: bind
+        source: ./changes/opensearch.xml
+        target: /usr/local/searxng/searx/templates/simple/opensearch.xml
+        
+      - type: bind
+        source: ./changes/opensearch_response_rss.xml
+        target: /usr/local/searxng/searx/templates/simple/opensearch_response_rss.xml
+        
+      - type: bind
+        source: ./changes/keyboard.js
+        target: /usr/local/searxng/client/simple/src/js/main/keyboard.js
+        
+      - type: bind
+        source: ./changes/keyboard.js
+        target: /usr/local/searxng/searx/static/themes/simple/src/js/main/keyboard.js
+        
+      - type: bind
+        source: ./changes/manifest.json
+        target: /usr/local/searxng/searx/static/themes/simple/manifest.json
+        
+      - type: bind
+        source: ./changes/index.less
+        target: /usr/local/searxng/client/simple/src/less/index.less
+        
+      - type: bind
+        source: ./changes/s4j.min.css
+        target: /usr/local/searxng/searx/static/themes/simple/css/s4j.min.css
+        
+      - type: bind
+        source: ./changes/s4j-rtl.min.css
+        target: /usr/local/searxng/searx/static/themes/simple/css/s4j-rtl.min.css
+        
+      - type: bind
+        source: ./changes/infopage/de/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/de/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/de/about.md
+        target: /usr/local/searxng/searx/infopage/de/about.md
+
+      - type: bind
+        source: ./changes/infopage/en/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/en/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/en/about.md
+        target: /usr/local/searxng/searx/infopage/en/about.md
+
+      - type: bind
+        source: ./changes/infopage/fa_IR/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/fa_IR/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/fa_IR/about.md
+        target: /usr/local/searxng/searx/infopage/fa_IR/about.md
+
+      - type: bind
+        source: ./changes/infopage/fr/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/fr/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/fr/about.md
+        target: /usr/local/searxng/searx/infopage/fr/about.md
+
+      - type: bind
+        source: ./changes/infopage/id/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/id/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/id/about.md
+        target: /usr/local/searxng/searx/infopage/id/about.md
+
+      - type: bind
+        source: ./changes/infopage/it/search-syntax.md
+        target: /usr/local/searxng/searx/infopage/it/search-syntax.md
+
+      - type: bind
+        source: ./changes/infopage/it/about.md
+        target: /usr/local/searxng/searx/infopage/it/about.md
+        
+########################################### TRANSLATIONS ###########################################
+
+      - type: bind
+        source: ./changes/translations/messages.pot
+        target: /usr/local/searxng/searx/translations/messages.pot
+
+      - type: bind
+        source: ./changes/translations/af/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/af/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/af/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/af/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ar/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ar/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ar/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ar/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/bg/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/bg/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/bg/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/bg/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/bn/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/bn/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/bn/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/bn/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/bo/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/bo/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/bo/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/bo/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ca/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ca/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ca/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ca/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/cs/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/cs/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/cs/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/cs/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/cy/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/cy/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/cy/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/cy/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/da/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/da/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/da/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/da/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/de/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/de/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/de/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/de/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/dv/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/dv/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/dv/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/dv/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/el_GR/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/el_GR/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/el_GR/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/el_GR/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/en/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/en/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/en/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/en/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/eo/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/eo/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/eo/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/eo/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/es/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/es/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/es/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/es/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/et/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/et/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/et/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/et/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/eu/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/eu/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/eu/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/eu/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/fa_IR/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/fa_IR/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/fa_IR/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/fa_IR/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/fi/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/fi/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/fi/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/fi/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/fil/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/fil/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/fil/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/fil/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/fr/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/fr/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/fr/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/fr/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/gl/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/gl/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/gl/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/gl/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/he/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/he/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/he/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/he/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/hr/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/hr/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/hr/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/hr/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/hu/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/hu/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/hu/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/hu/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ia/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ia/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ia/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ia/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/id/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/id/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/id/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/id/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/it/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/it/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/it/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/it/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ja/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ja/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ja/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ja/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ko/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ko/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ko/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ko/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/lt/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/lt/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/lt/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/lt/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/lv/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/lv/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/lv/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/lv/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ml/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ml/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ml/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ml/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ms/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ms/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ms/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ms/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/nb_NO/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/nb_NO/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/nb_NO/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/nb_NO/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/nl/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/nl/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/nl/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/nl/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/oc/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/oc/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/oc/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/oc/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/pa/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/pa/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/pa/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/pa/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/pap/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/pap/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/pap/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/pap/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/pl/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/pl/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/pl/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/pl/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/pt/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/pt/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/pt/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/pt/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/pt_BR/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/pt_BR/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/pt_BR/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/pt_BR/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ro/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ro/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ro/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ro/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ru/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ru/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ru/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ru/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/si/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/si/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/si/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/si/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/sk/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/sk/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/sk/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/sk/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/sl/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/sl/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/sl/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/sl/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/sr/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/sr/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/sr/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/sr/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/sv/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/sv/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/sv/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/sv/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/szl/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/szl/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/szl/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/szl/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/ta/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/ta/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/ta/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/ta/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/te/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/te/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/te/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/te/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/th/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/th/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/th/LC_MESSAGES/messages.po
+        target: /usr/local	searxng/searx/translations/th/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/tr/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/tr/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/tr/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/tr/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/uk/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/uk/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/uk/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/uk/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/vi/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/vi/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/vi/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/vi/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/zh_Hans_CN/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/zh_Hans_CN/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/zh_Hans_CN/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/zh_Hans_CN/LC_MESSAGES/messages.po
+
+      - type: bind
+        source: ./changes/translations/zh_Hant_TW/LC_MESSAGES/messages.mo
+        target: /usr/local/searxng/searx/translations/zh_Hant_TW/LC_MESSAGES/messages.mo
+
+      - type: bind
+        source: ./changes/translations/zh_Hant_TW/LC_MESSAGES/messages.po
+        target: /usr/local/searxng/searx/translations/zh_Hant_TW/LC_MESSAGES/messages.po
+        
+        
+########################################### TRANSLATIONS ###########################################
+
+
+    environment:
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+      - UWSGI_WORKERS=${SEARXNG_UWSGI_WORKERS:-4}
+      - UWSGI_THREADS=${SEARXNG_UWSGI_THREADS:-4}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
 networks:
   searxng:
-    ipam:
-      driver: default
 
 volumes:
   caddy-data:
   caddy-config:
+  valkey-data2:
