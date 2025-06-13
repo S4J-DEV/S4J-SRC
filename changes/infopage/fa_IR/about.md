@@ -7,14 +7,15 @@ SearchFor John یک موتور جستجو است (https://en.org/wiki/Metasearch
 
 ##  سایت های پیشنهادی / نرم افزار.
 
-[NextDNS](https://nextdns.io/?از=yvftmcv3) شما را از انواع تهدیدات امنیتی محافظت می کند، تبلیغات و ردیاب ها را در وب سایت ها و در برنامه ها مسدود می کند و امن و نظارت می کند. اینترنت برای کودکان – در تمام دستگاه ها و در تمام شبکه ها (و اگر از لینک من استفاده کنید، من یک ضربه دریافت می کنم!)
-[LibRedirect](httpslib://redirect.github.io/) یک نرم افزار است که من شخصا پیشنهاد می کنم تست کنید زیرا اجازه می دهد تا سیستم عامل های حریم خصوصی محبوب/crontrivercial را تغییر دهند [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) / [Libre](https://wikipedia.org/wiki/Free_software) که به طور معمول به کاربران / افزونه های بالاتر یا افزونه های دیجیتال احترام می گذارند.
+- [NextDNS](https://nextdns.io/?از=yvftmcv3) شما را از انواع تهدیدات امنیتی محافظت می کند، تبلیغات و ردیاب ها را در وب سایت ها و در برنامه ها مسدود می کند و امن و نظارت می کند. اینترنت برای کودکان – در تمام دستگاه ها و در تمام شبکه ها (و اگر از لینک من استفاده کنید، من یک ضربه دریافت می کنم!)
+
+- [LibRedirect](httpslib://redirect.github.io/) یک نرم افزار است که من شخصا پیشنهاد می کنم تست کنید زیرا اجازه می دهد تا سیستم عامل های حریم خصوصی محبوب/crontrivercial را تغییر دهند [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) / [Libre](https://wikipedia.org/wiki/Free_software) که به طور معمول به کاربران / افزونه های بالاتر یا افزونه های دیجیتال احترام می گذارند.
 بیشتر برای آمدن (شاید)
 
 ## جستجو برای جان را بهتر کنید.
 
-* اکنون می توانید من را در [BlueSky](https://bsky.app/profile/searchforjohn.com/)، احساس رایگان برای دنبال کردن من یا رسیدن به آن پیدا کنید!
-* لطفا به این پروژه با استفاده از [Donate](https://donate.searchforjohn.com/) توجه کنید  لینک!
+- اکنون می توانید من را در [BlueSky](https://bsky.app/profile/searchforjohn.com/)، احساس رایگان برای دنبال کردن من یا رسیدن به آن پیدا کنید!
+- لطفا به این پروژه با استفاده از [Donate](https://donate.searchforjohn.com/) توجه کنید  لینک!
 
 ## چرا از آن استفاده کنیم؟?
 
@@ -32,10 +33,12 @@ SearchFor John یک موتور جستجو است (https://en.org/wiki/Metasearch
 جستجو برای جان [OpenSearch](https://github.com/dewitt/opensearch/blob/master/opensearch-1-draft-6.md) پشتیبانی می کند . برای اطلاعات بیشتر در مورد تغییر پیش فرض خود
 موتور جستجو، اسناد مرورگر خود را ببینید:
 
-[Firefox](https://support.mozilla.org/en-US/kb/add-ormove-search-مهندسی-Firefox)
-[Microsoft Edge](https://support.microsoft.com/en-us/help/4028574/Microsoft-edge-change-search-موتور) - پشت لینک، شما همچنین برخی از دستورالعمل های مفید را پیدا خواهید کرد.
+- [Firefox](https://support.mozilla.org/en-US/kb/add-ormove-search-مهندسی-Firefox)
+
+- [Microsoft Edge](https://support.microsoft.com/en-us/help/4028574/Microsoft-edge-change-search-موتور) - پشت لینک، شما همچنین برخی از دستورالعمل های مفید را پیدا خواهید کرد.
 برای Chrome و Safari
-* [Chromium](https://www.chromium.org/tab-to-search) مرورگرهای مبتنی بر فقط وب سایت هایی را اضافه می کنند که کاربر بدون آن حرکت می کند.
+
+- [Chromium](https://www.chromium.org/tab-to-search) مرورگرهای مبتنی بر فقط وب سایت هایی را اضافه می کنند که کاربر بدون آن حرکت می کند.
 یک مسیر.
 
 ## چگونه کار می کند؟?

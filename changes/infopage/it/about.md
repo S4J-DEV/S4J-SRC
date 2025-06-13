@@ -6,22 +6,27 @@ i suoi utenti.
 
 ## Siti consigliati/Softwares.
 
-* [NextDNS](https://nextdns.io/?from=yvftmcv3) ti protegge da tutti i tipi di minacce di sicurezza, blocca annunci e tracker sui siti web e nelle applicazioni e fornisce una cassaforte e supervisionata Internet per bambini — su tutti i dispositivi e su tutte le reti. (E se usi il mio link, ottengo un kick-back!)
-* [LibRedirect](https://libredirect.github.io/) è un software che personalmente suggerisco di testare in quanto permette di reindirizzare piattaforme popolari/crontrivercial a alternitive [FOSS](https://wikipedia.org/wiki/wiki/Free_and_open-source_software)/[Libre](https://wikipedia.org/wiki/wiki/Free_software
-* More To Come, (Maybe)
+- [NextDNS](https://nextdns.io/?from=yvftmcv3) ti protegge da tutti i tipi di minacce di sicurezza, blocca annunci e tracker sui siti web e nelle applicazioni e fornisce una cassaforte e supervisionata Internet per bambini — su tutti i dispositivi e su tutte le reti. (E se usi il mio link, ottengo un kick-back!)
+
+- [LibRedirect](https://libredirect.github.io/) è un software che personalmente suggerisco di testare in quanto permette di reindirizzare piattaforme popolari/crontrivercial a alternitive [FOSS](https://wikipedia.org/wiki/wiki/Free_and_open-source_software)/[Libre](https://wikipedia.org/wiki/wiki/Free_software)
+
+- More To Come, (Maybe)
 
 ## Make SearchForJohn better.
 
-* Ora potete trovarmi su [BlueSky](https://bsky.app/profile/searchforjohn.com/), sentitevi liberi di seguirmi o di raggiungermi!
-* Si prega di considerare di donare a questo progetto utilizzando il link [Donate](https://donate.searchforjohn.com/)!
+- Ora potete trovarmi su [BlueSky](https://bsky.app/profile/searchforjohn.com/), sentitevi liberi di seguirmi o di raggiungermi!
+
+- Si prega di considerare di donare a questo progetto utilizzando il link [Donate](https://donate.searchforjohn.com/)!
 
 ## Perché usarlo?
 
-* SearchForJohn non può offrire come risultati personalizzati come Google, ma non
+- SearchForJohn non può offrire come risultati personalizzati come Google, ma non
 generare un profilo su di te.
-* SearchForJohn non si preoccupa di quello che cercate, non condivide mai nulla con un
+
+- SearchForJohn non si preoccupa di quello che cercate, non condivide mai nulla con un
 E non puo' essere usato per comprometterla.
-* SearchForJohn è e sarà sempre libero.
+
+- SearchForJohn è e sarà sempre libero.
 
 Se ti interessa la privacy, vuoi essere un utente consapevole, o altrimenti credi
 in libertà digitale, sentitevi liberi di fare SearchForJohn il vostro motore di ricerca predefinito!
@@ -31,10 +36,12 @@ in libertà digitale, sentitevi liberi di fare SearchForJohn il vostro motore di
 SearchForJohn supporta [OpenSearch](https://github.com/dewitt/opensearch/blob/master/opensearch-1-draft-6.md). Per ulteriori informazioni sulla modifica del vostro default
 motore di ricerca, vedere la documentazione del browser:
 
-* [Firefox](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
-* [Microsoft Edge](https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine) - Dietro il link, troverete anche alcune istruzioni utili
+- [Firefox](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
+
+- [Microsoft Edge](https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine) - Dietro il link, troverete anche alcune istruzioni utili
 per Chrome e Safari.
-* [Chromium](https://www.chromium.org/tab-to-search)- browser basati aggiungono solo i siti web a cui l'utente naviga senza
+
+- [Chromium](https://www.chromium.org/tab-to-search)- browser basati aggiungono solo i siti web a cui l'utente naviga senza
 un sentiero.
 
 ## Come funziona?

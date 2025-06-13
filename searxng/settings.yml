@@ -1143,19 +1143,15 @@ engines:
     timeout: 6.0
     disabled: true
 
-#   - name: invidious
-#     engine: invidious
-#     # Instanes will be selected randomly, see https://api.invidious.io/ for
-#     # instances that are stable (good uptime) and close to you.
-#     base_url:
-#       - https://invidious.f5.si
-#       - https://invidious.nerdvpn.de
-#       - https://id.420129.xyz
-#       - https://yewtu.be
-
-    shortcut: iv
-    timeout: 3.0
-    disabled: true
+  # - name: invidious
+  #   engine: invidious
+  #   # if you want to use invidious with SearXNG you should setup one locally
+  #   # https://github.com/searxng/searxng/issues/2722#issuecomment-2884993248
+  #   base_url:
+  #     - https://invidious.example1.com
+  #     - https://invidious.example2.com
+  #   shortcut: iv
+  #   timeout: 3.0
 
   - name: ipernity
     engine: ipernity
@@ -2772,9 +2768,8 @@ engines:
 doi_resolvers:
   oadoi.org: 'https://oadoi.org/'
   doi.org: 'https://doi.org/'
-  dissem.in: 'https://dissem.in/'
   sci-hub.se: 'https://sci-hub.se/'
   sci-hub.st: 'https://sci-hub.st/'
   sci-hub.ru: 'https://sci-hub.ru/'
 
-default_doi_resolver: 'dissem.in'
+default_doi_resolver: 'oadoi.org'

@@ -36,8 +36,10 @@ SearchForJohn supports [OpenSearch].  For more information on changing your defa
 search engine, see your browser's documentation:
 
 - [Firefox]
+
 - [Microsoft Edge] - Behind the link, you will also find some useful instructions
   for Chrome and Safari.
+
 - [Chromium]- based browsers only add websites that the user navigates to without
   a path.
 

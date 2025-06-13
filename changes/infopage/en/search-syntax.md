@@ -31,7 +31,7 @@ To select language filter use a `:` prefix.  To give an example:
 
 - search Wikipedia by a custom language
 
-  - {{search(':fr !wp Wau Holland')}}
+- {{search(':fr !wp Wau Holland')}}
 
 ## `!!<bang>` external bangs
 
