@@ -1,2 +1,6 @@
   '^www\.fandom\.com(/.*)?$': 'breezewiki.com'
   '^(?!www\.)(?P<subdomain>[^.]+)\.fandom\.com$': '\g<subdomain>.breezewiki.com'
+
+# Uses one of the below endpoints as needed
+# breezewiki.com
+# antifandom.com

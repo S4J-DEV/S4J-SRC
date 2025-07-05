@@ -93,7 +93,7 @@ server:
     X-Content-Type-Options: nosniff
     X-XSS-Protection: 1; mode=block
     X-Download-Options: noopen
-    X-Robots-Tag: noarchive, nofollow
+    X-Robots-Tag: noarchive, noindex, nofollow
     Referrer-Policy: no-referrer
 
 redis:
