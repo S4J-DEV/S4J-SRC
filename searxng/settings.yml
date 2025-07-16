@@ -645,6 +645,7 @@ engines:
     # cf_ai_model_system: 'You will not say anything controversial or uncouth, You will remain strictly G rated, You will start every responce with "I AM AN AI LLM AND AS SUCH CAN SONETIMES HALLUCINATE AND SAY THINGS THAT ARE VERY WRONG. DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY!"\n'
     timeout: 30
     disabled: true
+    tokens: '$cf_ai_tokens'
 
   - name: core.ac.uk
     engine: core
