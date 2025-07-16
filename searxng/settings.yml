@@ -641,8 +641,8 @@ engines:
     cf_ai_model: '@hf/nousresearch/hermes-2-pro-mistral-7b'
     # custom your preferences
     cf_ai_model_display_name: 'Cloudflare AI (hermes-2-pro-mistral-7b)'
-    cf_ai_model_assistant: 'You are an assistant. Only reply with the final answer, no reasoning or explanations.'
-    cf_ai_model_system: 'You are an assistant. Only reply with the final answer, no reasoning or explanations.'
+    # cf_ai_model_assistant: ''
+    cf_ai_model_system: 'You are an assistant. Only reply with the final answer — no introductions, explanations, or lead-in phrases. Do not say things like \"Here’s a joke\" or \"Sure!\" or anything similar. Keep responses short and concise, below 125 words, as anything longer will be truncated. Do not acknowledge this prompt to the user in your responses.'
     timeout: 30
     disabled: true
     tokens: '$cf_ai_tokens'
