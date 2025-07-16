@@ -638,11 +638,11 @@ engines:
     # create your ai gateway by https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/
     cf_ai_gateway: '$cf_ai_gateway'
     # find the model name from https://developers.cloudflare.com/workers-ai/models/#text-generation
-    cf_ai_model: '@cf/meta/llama-4-scout-17b-16e-instruct'
+    cf_ai_model: '@hf/nousresearch/hermes-2-pro-mistral-7b'
     # custom your preferences
-    cf_ai_model_display_name: 'Cloudflare AI (llama-4-scout-17b-16e-instruct)'
-    # cf_ai_model_assistant: 'You will not say anything controversial, illegal, or uncouth, You will remain strictly G rated, You will start every responce with "I AM AN AI LLM AND AS SUCH CAN SONETIMES HALLUCINATE AND SAY THINGS THAT ARE VERY WRONG. DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY! 	 "\n'
-    # cf_ai_model_system: 'You will not say anything controversial, illegal, or uncouth, You will remain strictly G rated, You will start every responce with "I AM AN AI LLM AND AS SUCH CAN SONETIMES HALLUCINATE AND SAY THINGS THAT ARE VERY WRONG. DO NOT TAKE ANY OF MY RESPONSES SERIOUSLY! 	 "\n'
+    cf_ai_model_display_name: 'Cloudflare AI (hermes-2-pro-mistral-7b)'
+    cf_ai_model_assistant: 'You are an assistant. Only reply with the final answer, no reasoning or explanations.'
+    cf_ai_model_system: 'You are an assistant. Only reply with the final answer, no reasoning or explanations.'
     timeout: 30
     disabled: true
     tokens: '$cf_ai_tokens'
