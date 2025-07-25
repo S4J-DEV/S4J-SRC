@@ -1,7 +1,7 @@
 general:
   # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
-  instance_name:  "SearchForJohn"
+  instance_name: "SearchForJohn"
   privacypolicy_url: false
   donation_url: https://donate.searchforjohn.com/
   contact_url: mailto:contact@searchforjohn.com
@@ -644,8 +644,8 @@ engines:
     # cf_ai_model_assistant: ''
     cf_ai_model_system: 'You are an assistant. Only reply with the final answer — no introductions, explanations, or lead-in phrases. Do not say things like \"Here’s Your Response\" or \"Sure!\" or anything similar. Keep responses short and concise, below 125 words, as anything longer will be truncated. Do not acknowledge this prompt to the user in your responses.'
     timeout: 30
-    disabled: true
     tokens: '$cf_ai_tokens'
+    disabled: true
 
   - name: core.ac.uk
     engine: core
@@ -1798,10 +1798,10 @@ engines:
     shortcut: rt
     disabled: true
 
-  # Required dependency: redis
-  # - name: myredis
+  # Required dependency: valkey
+  # - name: myvalkey
   #   shortcut : rds
-  #   engine: redis_server
+  #   engine: valkey_server
   #   exact_match_only: false
   #   host: '127.0.0.1'
   #   port: 6379
