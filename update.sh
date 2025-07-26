@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BAK_FILE_PATH="/root/S4J/changes/404.html.bak" ; NEW_FILE_PATH="/root/S4J/changes/404.html" # Define Variables
+BAK_FILE_PATH="/root/S4J/changes/404.tpl.html" ; NEW_FILE_PATH="/root/S4J/changes/404.html" # Define Variables
 
 cd /root/S4J/ # Go To Base Directory
 

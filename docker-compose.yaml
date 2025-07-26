@@ -20,8 +20,8 @@ services:
         max-size: "1m"
         max-file: "1"
 
-  redis:
-    container_name: redis
+  valkey:
+    container_name: valkey
     image: docker.io/valkey/valkey:8-alpine
     command: valkey-server --save 30 1 --loglevel warning
     restart: unless-stopped
@@ -66,6 +66,7 @@ services:
 
     volumes:
       - ./searxng:/etc/searxng:rw
+      - searxng-data:/var/cache/searxng:rw
 
       - type: bind
         source: ./changes/image_proxy.html
@@ -694,3 +695,4 @@ volumes:
   caddy-data:
   caddy-config:
   valkey-data2:
+  searxng-data:

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="center">
     <h1>{{ _('Error 404: Page not found') }}</h1>
-    <div class="center">Evidently Someone is running amuck in the server room again, or the page your seeking doesnt exist!<br> <br> ¯&#92;_| ✖ 〜 ✖ |_/¯ </a></div>
+    <div class="center">Evidently Someone is running amuck in the server room again, or the page your seeking doesn't exist<br> <br><small>Names shown are randomized and not meant to represent any person real or fictional.</small><br> <br>¯\_| ✖ 〜 ✖ |_/¯</div>
     {% autoescape false %}
     <p>{{ _('Go to %(search_page)s.', search_page='<a href="{}">{}</a>'.format(url_for('index'), _('search page'))) }}</p>
     {% endautoescape %}
