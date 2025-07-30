@@ -72,4 +72,6 @@
 			header_up X-Forwarded-Proto {http.request.scheme}
 		}
 	}
+	# ── TLS STUFF ───────────────────────────────────────────────────────────
+	tls /root/certs/S4J.pem /root/certs/S4J.key.pem
 }
