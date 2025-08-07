@@ -17,6 +17,12 @@ general:
 
 brand:
   public_instances: false
+  # custom:
+  #   maintainer: "Jon Doe"
+  #   # Custom entries in the footer: [title]: [link]
+  #   links:
+  #     Uptime: https://uptime.searxng.org/history/darmarit-org
+  #     About: "https://searxng.org"
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -275,7 +281,7 @@ checker:
   # disable checker when in debug mode
   off_when_debug: true
 
-  # use "scheduling: false" to disable scheduling
+  # use "scheduling: {}" to disable scheduling
   # scheduling: interval or int
 
   # to activate the scheduler:
@@ -283,9 +289,9 @@ checker:
   # * add "cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1"
   #   to your uwsgi.ini
 
-  # scheduling:
-  #   start_after: [300, 1800]  # delay to start the first run of the checker
-  #   every: [86400, 90000]     # how often the checker runs
+  scheduling:
+    start_after: [300, 1800]  # delay to start the first run of the checker
+    every: [86400, 90000]     # how often the checker runs
 
   # additional tests: only for the YAML anchors (see the engines section)
   #
@@ -303,7 +309,7 @@ checker:
     android: &test_android
       matrix:
         query: ['android']
-        lang: ['en', 'de', 'fr', 'zh-CN']
+        lang: ['en', 'de', 'fr']
       result_container:
         - not_empty
         - ['one_title_contains', 'google']
@@ -2596,11 +2602,6 @@ engines:
     engine: wttr
     shortcut: wttr
     timeout: 9.0
-
-  - name: yummly
-    engine: yummly
-    shortcut: yum
-    disabled: true
 
   - name: brave
     engine: brave
