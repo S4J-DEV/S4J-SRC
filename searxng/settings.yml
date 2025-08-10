@@ -7,6 +7,7 @@ general:
   donation_url: https://donate.searchforjohn.com/
   contact_url: mailto:contact@searchforjohn.com
   status_url: https://status.searchforjohn.com/
+  blacklist_url: https://availability.searchforjohn.com/
   observatory_url: https://security.searchforjohn.com/
   # record stats
   enable_metrics: true
@@ -72,7 +73,6 @@ search:
   formats:
     - html
     - json
-    - csv
     - rss
 
 server:
@@ -1090,7 +1090,7 @@ engines:
     engine: hex
     shortcut: hex
     disabled: true
-    # Valid values: name inserted_at updated_at total_downloads recent_downloads
+    # Valid vhttps://about.marginalia-search.com/article/api/alues: name inserted_at updated_at total_downloads recent_downloads
     sort_criteria: "recent_downloads"
     page_size: 10
 
@@ -1282,6 +1282,15 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+
+  - name: marginalia
+    engine: marginalia
+    shortcut: mar
+    # To get an API key, please follow the instructions at
+    # - 
+    # api_key: ...
+    disabled: true
+    inactive: true
 
   - name: mastodon users
     engine: mastodon
