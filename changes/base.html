@@ -83,12 +83,12 @@
         {% if get_setting('general.status_url') %}
         <a href="{{ get_setting('general.status_url') }}">{{ _('Server uptime') }}</a> | 
         {% endif %} 
-        {% if get_setting('general.blacklist_url') %}
-        <a href="{{ get_setting('general.blacklist_url') }}">{{ _('Server Blacklist Report') }}</a> | 
-        {% endif %} 
         {% if get_setting('general.observatory_url') %}
         <a href="{{ get_setting('general.observatory_url') }}">{{ _('Security analysis') }}</a> | 
         {% endif %}
+        {% if get_setting('general.blacklist_url') %}
+        <a href="{{ get_setting('general.blacklist_url') }}">{{ _('Server blacklist report') }}</a> | 
+        {% endif %} 
         {% if get_setting('general.contact_url') %}
         <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
         {% endif %}
