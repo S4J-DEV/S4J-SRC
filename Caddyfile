@@ -34,7 +34,7 @@
 		X-Content-Type-Options nosniff
 		Permissions-Policy "accelerometer=(),camera=(),cross-origin-isolated=(),display-capture=(),encrypted-media=(),gamepad=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),midi=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),usb=()"
 		Referrer-Policy no-referrer
-		X-Robots-Tag "noindex, noarchive, nofollow"
+		X-Robots-Tag "noindex, nofollow"
 		Cross-Origin-Resource-Policy "same-site"
 		Access-Control-Allow-Origin "https://www.searchforjohn.com"
 		Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self' 'nonce-{http.request.uuid}' static.cloudflareinsights.com ajax.cloudflare.com; style-src 'self'; form-action 'self'; font-src 'self'; frame-ancestors 'none'; frame-src 'self' https://www.youtube-nocookie.com/ https://upload.wikimedia.org/ https://srv.piped.video/ https://pipedapi.kavin.rocks/ https://pipedapi.adminforge.de/ https://pipedapi.ducks.party/ https://api.piped.private.coffee/ https://videovortex.tv/ https://www.dailymotion.com/ https://yewtu.be/ https://*.freediverse.com/videos/ https://w.soundcloud.com/player/ https://www.mixcloud.com/ https://player-widget.mixcloud.com/ https://bandcamp.com/; child-src 'none'; worker-src 'none'; base-uri 'self'; connect-src 'self' cloudflareinsights.com; img-src 'self' data: *; object-src 'none';"
