@@ -309,7 +309,7 @@ checker:
     android: &test_android
       matrix:
         query: ['android']
-        lang: ['en', 'de', 'fr']
+        lang: ['en', 'de', 'fr', 'zh-CN']
       result_container:
         - not_empty
         - ['one_title_contains', 'google']
@@ -1090,7 +1090,7 @@ engines:
     engine: hex
     shortcut: hex
     disabled: true
-    # Valid vhttps://about.marginalia-search.com/article/api/alues: name inserted_at updated_at total_downloads recent_downloads
+    # Valid values: name inserted_at updated_at total_downloads recent_downloads
     sort_criteria: "recent_downloads"
     page_size: 10
 
@@ -1287,7 +1287,7 @@ engines:
     engine: marginalia
     shortcut: mar
     # To get an API key, please follow the instructions at
-    # - 
+    # - https://about.marginalia-search.com/article/api/
     # api_key: ...
     disabled: true
     inactive: true
@@ -2315,7 +2315,7 @@ engines:
     #
     # Or you can use the html non-stable engine, activated by default
     engine: wolframalpha_noapi
-    timeout: 6.0
+    timeout: 8.0
     categories: general
 
   - name: dictzone
