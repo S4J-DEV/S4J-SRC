@@ -1288,7 +1288,7 @@ engines:
     shortcut: mar
     # To get an API key, please follow the instructions at
     # - https://about.marginalia-search.com/article/api/
-    # api_key: ...
+    api_key: '$MARGINALIAKEY'
     disabled: true
     inactive: true
 
@@ -1485,7 +1485,6 @@ engines:
   - name: openclipart
     engine: openclipart
     shortcut: ocl
-    inactive: true
     disabled: true
     timeout: 30
 
@@ -1856,7 +1855,6 @@ engines:
   - name: selfhst icons
     engine: selfhst
     shortcut: si
-    inactive: true
     disabled: true
 
   - name: sepiasearch
@@ -2115,7 +2113,6 @@ engines:
     search_type: web
     shortcut: yd
     disabled: true
-    inactive: true
 
   - name: yandex images
     engine: yandex
@@ -2123,7 +2120,6 @@ engines:
     search_type: images
     shortcut: ydi
     disabled: true
-    inactive: true
 
   - name: yandex music
     engine: yandex_music
