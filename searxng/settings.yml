@@ -1289,8 +1289,6 @@ engines:
     # To get an API key, please follow the instructions at
     # - https://about.marginalia-search.com/article/api/
     api_key: '$MARGINALIAKEY'
-    disabled: true
-    inactive: true
 
   - name: mastodon users
     engine: mastodon
