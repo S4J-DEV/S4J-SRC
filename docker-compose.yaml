@@ -1,5 +1,7 @@
 version: "3.7"
 
+name: S4J
+
 services:
 
   caddy:
@@ -47,24 +49,25 @@ services:
       - "127.0.0.1:8080:8080"
     entrypoint:
       - sh
-      - -c
+      - "-c"
       - |
-        sed 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
-        /usr/local/searxng/searx/static/themes/simple/js/searxng.min.js \
-        > /usr/local/searxng/searx/static/themes/simple/js/s4j.min.js && \
-
-        sed 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
-          /usr/local/searxng/searx/static/themes/simple/js/searxng.min.js.map \
-          > /usr/local/searxng/searx/static/themes/simple/js/s4j.min.js.map && \
-
-        cp /usr/local/searxng/searx/static/themes/simple/js/searxng.head.min.js \
-          /usr/local/searxng/searx/static/themes/simple/js/s4j.head.min.js && \
+        sed -i 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
+          /usr/local/searxng/searx/static/themes/simple/js/keyboard.min.js
+        sed -i 's/How to navigate SearXNG with hotkeys/How to navigate SearchForJohn with hotkeys/g' \
+          /usr/local/searxng/searx/static/themes/simple/js/keyboard.min.js.map
+        sed -i 's|/img/searxng.png|/img/s4j.png|g' \
+          /usr/local/searxng/searx/static/themes/simple/css/searxng-rtl.min.css
+        sed -i 's|/img/searxng.png|/img/s4j.png|g' \
+          /usr/local/searxng/searx/static/themes/simple/css/searxng-ltr.min.css
+        cp -f /usr/local/searxng/searx/static/themes/simple/css/searxng-rtl.min.css \
+              /usr/local/searxng/searx/static/themes/simple/css/s4j-rtl.min.css
+        cp -f /usr/local/searxng/searx/static/themes/simple/css/searxng-ltr.min.css \
+              /usr/local/searxng/searx/static/themes/simple/css/s4j-ltr.min.css
+        cp -f /usr/local/searxng/searx/static/themes/simple/js/searxng.core.min.js \
+              /usr/local/searxng/searx/static/themes/simple/js/s4j.core.min.js
+        cp -f /usr/local/searxng/searx/static/themes/simple/js/searxng.core.min.js.map \
+              /usr/local/searxng/searx/static/themes/simple/js/s4j.core.min.js.map
         exec /usr/local/searxng/entrypoint.sh
-
-#         cp /usr/local/searxng/searx/static/themes/simple/css/searxng.min.css \
-#            /usr/local/searxng/searx/static/themes/simple/css/s4j.min.css && \
-#         cp /usr/local/searxng/searx/static/themes/simple/css/searxng-rtl.min.css \
-#            /usr/local/searxng/searx/static/themes/simple/css/s4j-rtl.min.css && \
 
     volumes:
       - ./searxng:/etc/searxng:rw
@@ -135,28 +138,12 @@ services:
         target: /usr/local/searxng/searx/templates/simple/opensearch_response_rss.xml
         
       - type: bind
-        source: ./changes/keyboard.js
-        target: /usr/local/searxng/client/simple/src/js/main/keyboard.js
-        
-      - type: bind
-        source: ./changes/keyboard.js
-        target: /usr/local/searxng/searx/static/themes/simple/src/js/main/keyboard.js
-        
-      - type: bind
         source: ./changes/manifest.json
         target: /usr/local/searxng/searx/static/themes/simple/manifest.json
         
       - type: bind
         source: ./changes/index.less
         target: /usr/local/searxng/client/simple/src/less/index.less
-        
-      - type: bind
-        source: ./changes/s4j.min.css
-        target: /usr/local/searxng/searx/static/themes/simple/css/s4j.min.css
-        
-      - type: bind
-        source: ./changes/s4j-rtl.min.css
-        target: /usr/local/searxng/searx/static/themes/simple/css/s4j-rtl.min.css
         
       - type: bind
         source: ./changes/infopage/de/search-syntax.md

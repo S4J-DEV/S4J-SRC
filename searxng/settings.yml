@@ -989,6 +989,24 @@ engines:
     engine: github
     shortcut: gh
 
+  - name: github code
+    engine: github_code
+    shortcut: ghc
+    disabled: true
+    ghc_auth:
+      # type is one of:
+      # * none
+      # * personal_access_token
+      # * bearer
+      # When none is passed, the token is not requried.
+      type: "none"
+      token: "token"
+    # specify whether to highlight the matching lines to the query
+    ghc_highlight_matching_lines: true
+    ghc_strip_new_lines: true
+    ghc_strip_whitespace: false
+    timeout: 10.0
+
   - name: codeberg
     # https://docs.searxng.org/dev/engines/online/gitea.html
     engine: gitea
@@ -1480,9 +1498,19 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: openalex
+    engine: openalex
+    shortcut: oa
+    # https://docs.searxng.org/dev/engines/online/openalex.html
+    # Recommended by OpenAlex: join the polite pool with an email address
+    # mailto: "[email protected]"
+    timeout: 5.0
+    disabled: true
+
   - name: openclipart
     engine: openclipart
     shortcut: ocl
+    inactive: true
     disabled: true
     timeout: 30
 
