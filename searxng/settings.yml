@@ -51,7 +51,7 @@ search:
   #   - fr
   #   - fr-BE
   # ban time in seconds after engine errors
-  ban_time_on_fail: 10
+  ban_time_on_fail: 5
   # max ban time in seconds after engine errors
   max_ban_time_on_fail: 120
   suspended_times:
@@ -97,8 +97,9 @@ server:
   image_proxy: true
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.1"
-  # POST queries are more secure as they don't show up in history but may cause
-  # problems when using Firefox containers.
+  # POST queries are "more secure!" but are also the source of hard-to-locate
+  # annoyances, which is why GET may be better for end users and their browsers.
+  # see https://github.com/searxng/searxng/pull/3619
   # Is overwritten by ${SEARXNG_METHOD}
   method: "GET"
   default_http_headers:
@@ -117,8 +118,6 @@ valkey:
 ui:
   # Custom static path - leave it blank if you didn't change
   static_path: ""
-#   # Is overwritten by ${SEARXNG_STATIC_USE_HASH}.
-#   static_use_hash: false
   # Custom templates path - leave it blank if you didn't change
   templates_path: ""
   # query_in_title: When true, the result page's titles contains the query
@@ -127,7 +126,7 @@ ui:
   # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
   infinite_scroll: false
   # ui theme
-  # default_theme: simple
+  default_theme: simple
   # center the results ?
   center_alignment: true
   # URL prefix of the internet archive, don't forget trailing slash (if needed).
@@ -236,6 +235,9 @@ plugins:
     active: true
 
   searx.plugins.hostnames.SXNGPlugin:
+    active: true
+
+  searx.plugins.time_zone.SXNGPlugin:
     active: true
 
   searx.plugins.oa_doi_rewrite.SXNGPlugin:
@@ -1886,7 +1888,7 @@ engines:
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
-    disabled: true
+
 
   - name: sogou
     engine: sogou
@@ -2522,6 +2524,11 @@ engines:
     base_url: https://rumble.com/
     paging: true
     categories: videos
+    disabled: true
+
+  - name: repology
+    engine: repology
+    shortcut: rep
     disabled: true
 
   - name: livespace
