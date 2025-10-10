@@ -17,13 +17,11 @@ general:
   open_metrics: ''
 
 brand:
-  public_instances: false
-  # custom:
-  #   maintainer: "Jon Doe"
-  #   # Custom entries in the footer: [title]: [link]
-  #   links:
-  #     Uptime: https://uptime.searxng.org/history/darmarit-org
-  #     About: "https://searxng.org"
+  public_instances: ""
+  new_issue_url: ""
+  docs_url: ""
+  wiki_url: ""
+  issue_url: ""
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -407,13 +405,12 @@ engines:
       require_api_key: false
       results: JSON
 
-  # - name: astrophysics data system
-  #   engine: astrophysics_data_system
-  #   sort: asc
-  #   weight: 5
-  #   categories: [science]
-  #   api_key: your-new-key
-  #   shortcut: ads
+  - name: astrophysics data system
+    engine: astrophysics_data_system
+    shortcut: ads
+    # read https://docs.searxng.org/dev/engines/online/astrophysics_data_system.html
+    api_key: ""
+    inactive: true
 
   - name: alpine linux packages
     engine: alpinelinux
